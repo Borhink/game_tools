@@ -9,4 +9,4 @@ Effets : à faire
 
 <b>-Autre:</b>
 
-Pathfinding et déplacement: à faire
+Pathfinding et déplacement: OK
