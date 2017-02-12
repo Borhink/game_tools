@@ -27,7 +27,7 @@ std::string Debug::to_str(size_t n)
     return s.str();
 }
 
-std::string Debug::to_str(int **map, size_t mapSize)
+std::string Debug::to_str(int **map, int mapSize)
 {
     std::ostringstream s;
 
@@ -37,7 +37,7 @@ std::string Debug::to_str(int **map, size_t mapSize)
         for (int x(0); x < mapSize; x++)
         {
             s << map[y][x];
-            s << " ";
+            s << "\t";
         }
         if (y + 1 < mapSize)
             s << std::endl;
@@ -45,7 +45,7 @@ std::string Debug::to_str(int **map, size_t mapSize)
     return s.str();
 }
 
-std::string Debug::to_str(int *map, size_t mapSize)
+std::string Debug::to_str(int *map, int mapSize)
 {
     std::ostringstream s;
 
@@ -55,7 +55,7 @@ std::string Debug::to_str(int *map, size_t mapSize)
         for (int x(0); x < mapSize; x++)
         {
             s << map[y * mapSize + x];
-            s << " ";
+            s << "\t";
         }
         if (y + 1 < mapSize)
             s << std::endl;

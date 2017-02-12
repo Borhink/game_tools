@@ -5,6 +5,7 @@
 #include "Debug.h"
 #include "Effect.h"
 #include "Spell.h"
+#include "Movable.h"
 
 #define TICK_PER_SECOND 1.0f / 60.0f
 #define MAP_SIZE 20
@@ -41,9 +42,9 @@ int main()
 	float		    	elapsed(0);
 	sf::Vector2f        offset(15, 50);
 	int**               game_map;
-	sf::Vector2i        playerPos(10, 10);
-    sf::Vector2i        pos(16, 5);
-	Spell               spell("V4");
+	Movable             player(10, 10);
+    sf::Vector2i        pos(12, 10);
+	Spell               spell("X2;V6");
 
     cell.setSize(sf::Vector2f(15, 15));
     cell.setOutlineColor(sf::Color::White);
@@ -57,7 +58,8 @@ int main()
         for (int x(0); x < MAP_SIZE; x++)
             game_map[y][x] = 0;
     }
-    spell.use(20, game_map, playerPos, pos);
+    player.goTo(sf::Vector2i(3, 18), game_map, MAP_SIZE);
+    spell.use(20, game_map, player.getPos(), pos);
 
     while (window.isOpen())
     {
@@ -86,11 +88,13 @@ int main()
                         cell.setOutlineColor(sf::Color::White);
                     else if (game_map[y][x] == 1)
                         cell.setOutlineColor(sf::Color::Red);
-                    if (sf::Vector2i(x, y) == playerPos)
-                        cell.setOutlineColor(sf::Color::Blue);
                     if (sf::Vector2i(x, y) == pos)
+                        cell.setOutlineColor(sf::Color::Yellow);
+                    if (game_map[y][x] == 10)
                         cell.setOutlineColor(sf::Color::Green);
                     cell.setPosition(offset.x + x * 28, offset.y + y * 28);
+                    if (sf::Vector2i(x, y) == player.getPos())
+                        cell.setOutlineColor(sf::Color::Blue);
                     window.draw(cell);
                 }
             }
