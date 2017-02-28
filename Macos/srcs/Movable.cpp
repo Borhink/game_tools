@@ -60,14 +60,7 @@ int	Movable::pathfinding(sf::Vector2i pos, int **gameMap, int mapSize)
 int Movable::getWeight(sf::Vector2i pos, int **gameMap, int mapSize)
 {
     if (pos.y < 0 || pos.x < 0 || pos.y >= mapSize || pos.x >= mapSize || !gameMap[pos.y][pos.x] || gameMap[pos.y][pos.x] == 10)
-    {
-        if (pos.y < 0 || pos.x < 0 || pos.y >= mapSize || pos.x >= mapSize)
-            Debug::log("Movable::getWeight(FAIL): invalid POS = ");
-        else
-            Debug::log("Movable::getWeight(FAIL): gameMap[" + Debug::to_str(pos.y) + "][" + Debug::to_str(pos.x) + "] = " + Debug::to_str(gameMap[pos.y][pos.x]));
         return (10000);
-    }
-    Debug::log("Movable::getWeight(OK): gameMap[" + Debug::to_str(pos.y) + "][" + Debug::to_str(pos.x) + "] = " + Debug::to_str(gameMap[pos.y][pos.x]));
     return (gameMap[pos.y][pos.x]);
 }
 
