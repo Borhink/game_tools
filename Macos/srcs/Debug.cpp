@@ -44,19 +44,48 @@ std::string Debug::to_str(size_t n)
     return s.str();
 }
 
-std::string Debug::to_str(int **map, int mapSize)
+std::string Debug::to_str(sf::Vector2i v)
+{
+    std::ostringstream s;
+    s << v.y;
+	s << "y, ";
+	s << v.x;
+	s << "x";
+    return s.str();
+}
+
+std::string Debug::to_str(std::vector<std::vector<int>> map, sf::Vector2i mapSize)
 {
     std::ostringstream s;
 
     s << std::endl;
-    for (int y(0); y < mapSize; y++)
+    for (int y(0); y < mapSize.y; y++)
     {
-        for (int x(0); x < mapSize; x++)
+        for (int x(0); x < mapSize.x; x++)
         {
             s << map[y][x];
             s << "\t";
         }
-        if (y + 1 < mapSize)
+        if (y + 1 < mapSize.y)
+            s << std::endl;
+    }
+    return s.str();
+}
+
+std::string Debug::to_str(Map &map)
+{
+    std::ostringstream	s;
+	sf::Vector2i		mapSize(map.getSize());
+
+    s << std::endl;
+    for (int y(0); y < mapSize.y; y++)
+    {
+        for (int x(0); x < mapSize.x; x++)
+        {
+            s << map.getCell(x, y);
+            s << "\t";
+        }
+        if (y + 1 < mapSize.y)
             s << std::endl;
     }
     return s.str();

@@ -138,15 +138,16 @@ void Effect::createEffectZone(std::string zone)
     }
 }
 
-void Effect::applyEffect(int mapSize, int **map, int px, int py, Direction dir)
+void Effect::applyEffect(Map &map, int px, int py, Direction dir)
 {
-    sf::Vector2i pos;
+    sf::Vector2i	pos;
+	sf::Vector2i	mapSize(map.getSize());
 
     Debug::log("Effect::applyEffect: dir = " + Debug::to_str(dir));
     Debug::log("Effect::applyEffect: px = " + Debug::to_str(px));
     Debug::log("Effect::applyEffect: py = " + Debug::to_str(py));
     Debug::log("Effect::applyEffect: mapSize = " + Debug::to_str(mapSize));
-    Debug::log("Effect::applyEffect: map = " + Debug::to_str(map, mapSize));
+    Debug::log("Effect::applyEffect: map = " + Debug::to_str(map));
     Debug::log("Effect::applyEffect: mSize = " + Debug::to_str(mSize));
     Debug::log("Effect::applyEffect: mZone = " + Debug::to_str(mZone, mSize));
     for (int y(0); y < mSize; y++)
@@ -159,23 +160,27 @@ void Effect::applyEffect(int mapSize, int **map, int px, int py, Direction dir)
                 {
                     case Left:
                         pos = sf::Vector2i(px - x + mOrigin.x, y + py - mOrigin.y);
-                        if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize && pos.y < mapSize)
-                            map[pos.y][pos.x] = mZone[y * mSize + x];
+                        if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y)
+							map.setCell(pos, mZone[y * mSize + x], CellType::Zone);
+                            // map[pos.y][pos.x] = mZone[y * mSize + x];
                     break;
                     case Up:
                         pos = sf::Vector2i(px + y - mOrigin.y, py - x + mOrigin.x);
-                        if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize && pos.y < mapSize)
-                            map[pos.y][pos.x] = mZone[y * mSize + x];
+                        if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y)
+							map.setCell(pos, mZone[y * mSize + x], CellType::Zone);
+                            // map[pos.y][pos.x] = mZone[y * mSize + x];
                     break;
                     case Down:
                         pos = sf::Vector2i(px + y - mOrigin.y, py + x - mOrigin.x);
-                        if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize && pos.y < mapSize)
-                            map[pos.y][pos.x] = mZone[y * mSize + x];
+                        if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y)
+							map.setCell(pos, mZone[y * mSize + x], CellType::Zone);
+                            // map[pos.y][pos.x] = mZone[y * mSize + x];
                     break;
                     default:
                         pos = sf::Vector2i(px + x - mOrigin.x, py + y - mOrigin.y);
-                        if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize && pos.y < mapSize)
-                            map[pos.y][pos.x] = mZone[y * mSize + x];
+                        if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y)
+							map.setCell(pos, mZone[y * mSize + x], CellType::Zone);
+                            // map[pos.y][pos.x] = mZone[y * mSize + x];
                     break;
                 }
             }

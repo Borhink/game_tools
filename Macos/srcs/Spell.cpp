@@ -17,7 +17,7 @@ void Spell::add_effect(std::string effectArgs)
     mEffects.push_back(new Effect(effectArgs));
 }
 
-void Spell::use(int mapSize, int **map, sf::Vector2i player, sf::Vector2i pos)
+void Spell::use(Map &map, sf::Vector2i player, sf::Vector2i pos)
 {
     Effect::Direction dir;
     int distX = pos.x - player.x;
@@ -28,7 +28,7 @@ void Spell::use(int mapSize, int **map, sf::Vector2i player, sf::Vector2i pos)
     else
         dir = distY < 0 ? Effect::Up : Effect::Down;
     for(auto effect = mEffects.begin(); effect != mEffects.end(); ++effect)
-        (*effect)->applyEffect(mapSize, map, pos.x, pos.y, dir);
+        (*effect)->applyEffect(map, pos.x, pos.y, dir);
 }
 
 Spell::~Spell()

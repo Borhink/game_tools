@@ -5,16 +5,16 @@ Movable::Movable(int x, int y)
     mPos = sf::Vector2i(x, y);
 }
 
-int Movable::isEmpty(int cell, int weight)
-{
-    if (cell && (cell < 100 || cell >= weight))
-        return (0);
-    return (1);
-}
+// int Movable::isEmpty(int cell, int weight)
+// {
+//     if (cell && (cell < 100 || cell >= weight))
+//         return (0);
+//     return (1);
+// }
 
-int Movable::validCell(sf::Vector2i pos, int **gameMap, int mapSize, int weight)
+int Movable::validCell(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize, int weight)
 {
-    if (pos.y >= 0 && pos.x >= 0 && pos.y < mapSize && pos.x < mapSize)
+    if (pos.y >= 0 && pos.x >= 0 && pos.y < mapSize.y && pos.x < mapSize.x)
     {
         int cell(gameMap[pos.y][pos.x]);
         if (!cell || (cell >= 100 && cell > weight))
@@ -23,7 +23,7 @@ int Movable::validCell(sf::Vector2i pos, int **gameMap, int mapSize, int weight)
     return (0);
 }
 
-int	Movable::nextCell(sf::Vector2i cur, int **gameMap, int mapSize, int weight, std::queue<sf::Vector2i> &cells)
+int	Movable::nextCell(sf::Vector2i cur, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize, int weight, std::queue<sf::Vector2i> &cells)
 {
 	if (validCell(sf::Vector2i(cur.x, cur.y), gameMap, mapSize, weight))
 	{
@@ -35,7 +35,7 @@ int	Movable::nextCell(sf::Vector2i cur, int **gameMap, int mapSize, int weight, 
 	return (0);
 }
 
-int	Movable::pathfinding(sf::Vector2i pos, int **gameMap, int mapSize)
+int	Movable::pathfinding(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize)
 {
     std::queue<sf::Vector2i>    cells;
     int                         weight;
@@ -57,14 +57,14 @@ int	Movable::pathfinding(sf::Vector2i pos, int **gameMap, int mapSize)
     return (0);
 }
 
-int Movable::getWeight(sf::Vector2i pos, int **gameMap, int mapSize)
+int Movable::getWeight(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize)
 {
-    if (pos.y < 0 || pos.x < 0 || pos.y >= mapSize || pos.x >= mapSize || !gameMap[pos.y][pos.x] || gameMap[pos.y][pos.x] == 10)
+    if (pos.y < 0 || pos.x < 0 || pos.y >= mapSize.y || pos.x >= mapSize.x || !gameMap[pos.y][pos.x] || gameMap[pos.y][pos.x] < 100)
         return (10000);
     return (gameMap[pos.y][pos.x]);
 }
 
-sf::Vector2i Movable::getPath(sf::Vector2i pos, int **gameMap, int mapSize)
+sf::Vector2i Movable::getPath(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize)
 {
     int weight(getWeight(sf::Vector2i(pos.x, pos.y + 1), gameMap, mapSize));
     sf::Vector2i path(pos.x, pos.y + 1);
@@ -87,39 +87,59 @@ sf::Vector2i Movable::getPath(sf::Vector2i pos, int **gameMap, int mapSize)
     return (path);
 }
 
-void Movable::clearPaths(int **gameMap, int mapSize)
+// void Movable::clearPaths(Map &map)
+// {
+// 	sf::Vector2i	size(map.getSize());
+//
+//     for (int y(0); y < size.y; y++)
+//     {
+//         for (int x(0); x < size.x; x++)
+//         {
+//             if (gameMap[y][x] >= 100)
+//                 gameMap[y][x] = 0;
+//         }
+//     }
+// }
+
+void Movable::copyBlock(std::vector<std::vector<int>> &pathMap, Map &map)
 {
-    for (int y(0); y < mapSize; y++)
-    {
-        for (int x(0); x < mapSize; x++)
-        {
-            if (gameMap[y][x] >= 100)
-                gameMap[y][x] = 0;
-        }
-    }
+	sf::Vector2i	size(map.getSize());
+
+	for (int y(0); y < size.y; y++)
+	{
+		pathMap[y].resize(size.x);
+		for (int x(0); x < size.x; x++)
+			pathMap[y][x] = map.getCell(x, y, (CellType)(CellType::Block + CellType::Player));
+	}
 }
 
-void Movable::goTo(sf::Vector2i pos, int **gameMap, int mapSize)
+void Movable::goTo(sf::Vector2i pos, Map &map)
 {
+	sf::Vector2i				mapSize(map.getSize());
+	std::vector<std::vector<int>>	pathMap(mapSize.y);
+	// int				pathMap[mapSize.y][mapSize.x];
+
     Debug::log("Movable::goTo: pos.x = " + Debug::to_str(pos.x));
     Debug::log("Movable::goTo: pos.y = " + Debug::to_str(pos.y));
-    if (pathfinding(pos, gameMap, mapSize))
+	copyBlock(pathMap, map);
+    if (pathfinding(pos, pathMap, mapSize))
     {
-        Debug::log("Movable::goTo: map = " + Debug::to_str(gameMap, mapSize));
+        Debug::log("Movable::goTo: map = " + Debug::to_str(pathMap, mapSize));
         Debug::log("Movable::goTo: PATH FIND !");
         for (sf::Vector2i cur(mPos); cur != pos;)
         {
-            cur = getPath(cur, gameMap, mapSize);
-            gameMap[cur.y][cur.x] = 10;
+            cur = getPath(cur, pathMap, mapSize);
+            // gameMap[cur.y][cur.x] = 10;
+			map.setCell(cur, 1, CellType::Path);
         }
         mPos = pos;
     }
     else
     {
-        Debug::log("Movable::goTo: map = " + Debug::to_str(gameMap, mapSize));
+        Debug::log("Movable::goTo: map = " + Debug::to_str(pathMap, mapSize));
         Debug::log("Movable::goTo: PATH NOT FIND !");
     }
-    clearPaths(gameMap, mapSize);
+    // clearPaths(gameMap, mapSize);
 }
 
 Movable::~Movable()

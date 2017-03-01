@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <SFML/Graphics.hpp>
 #include "Debug.h"
+#include "Map.h"
 
 class Effect
 {
@@ -20,7 +21,7 @@ class Effect
 
         Effect(std::string zone);
         void createEffectZone(std::string);
-        void applyEffect(int mapSize, int **map, int px, int py, Direction dir);
+        void applyEffect(Map &map, int px, int py, Direction dir);
         virtual ~Effect();
     protected:
     private:

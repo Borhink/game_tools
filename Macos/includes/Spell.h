@@ -6,6 +6,7 @@
 #include <string>
 #include "Effect.h"
 #include "Debug.h"
+#include "Map.h"
 
 
 class Spell
@@ -13,7 +14,7 @@ class Spell
     public:
         Spell(std::string effects);
         virtual ~Spell();
-        void use(int mapSize, int **map, sf::Vector2i player, sf::Vector2i pos);
+        void use(Map &map, sf::Vector2i player, sf::Vector2i pos);
         void add_effect(std::string effect);
     private:
         std::vector<Effect*> mEffects;
