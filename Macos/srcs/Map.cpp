@@ -19,6 +19,33 @@ Map::Map(sf::Vector2i size): mSize(size)
 	mPlayer = initTab(mPlayer, mSize);
 }
 
+void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	sf::RectangleShape  cell;
+	sf::Vector2f        offset(15, 50);
+
+	cell.setSize(sf::Vector2f(15, 15));
+	cell.setOutlineColor(sf::Color::White);
+	cell.setOutlineThickness(5);
+	cell.setPosition(offset);
+	for (int y(0); y < mSize.y; y++)
+	{
+		for (int x(0); x < mSize.x; x++)
+		{
+			if (this->getCell(x, y, CellType::Block))//Block sur la map
+				cell.setOutlineColor(sf::Color(155, 155, 155, 255));
+			else
+				cell.setOutlineColor(sf::Color::White);//Vide
+			if (this->getCell(x, y, CellType::Zone))//Zone de sort
+				cell.setOutlineColor(sf::Color::Red);
+			if (this->getCell(x, y, CellType::Path))//Chemin pathfinding
+				cell.setOutlineColor(sf::Color::Green);
+			cell.setPosition(offset.x + x * 28, offset.y + y * 28);
+			target.draw(cell, states);
+		}
+	}
+}
+
 bool Map::inBounds(sf::Vector2i pos) const
 {
 	if (pos.y < mSize.y && pos.y >= 0 && pos.x < mSize.x && pos.x >= 0)

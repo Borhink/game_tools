@@ -13,6 +13,7 @@ class Movable : public Entity
         Movable(int x = 0, int y = 0);
         virtual ~Movable();
         void goTo(sf::Vector2i pos, Map &map);
+        int showPath(sf::Vector2i pos, Map &map);
 
     protected:
         // int isEmpty(int cell, int weight);
@@ -25,6 +26,7 @@ class Movable : public Entity
         // void clearPaths(int **gameMap, int mapSize);
 
     private:
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
 #endif // MOVABLE_H

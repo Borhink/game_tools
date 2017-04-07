@@ -15,7 +15,7 @@ enum CellType
 	TypeCount = 32
 };
 
-class Map
+class Map : public sf::Drawable
 {
 	public:
 
@@ -34,6 +34,8 @@ class Map
 		sf::Vector2i getSize() const;
 
 	private:
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
 		int				**mCell;
 		int				**mPlayer;
 		sf::Vector2i	mSize;

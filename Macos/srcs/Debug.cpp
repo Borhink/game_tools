@@ -2,7 +2,6 @@
 
 Debug::Debug()
 {
-    //ctor
 }
 
 void Debug::drawText(sf::RenderWindow *window, std::string txt, int x, int y, sf::Color color, int size)
@@ -30,10 +29,10 @@ void Debug::log(std::string log)
         struct tm *curtime = localtime(&_tm);
         std::string date = asctime(curtime);
         date.pop_back();
-        std::ofstream myfile;
-        myfile.open("logs.txt", std::ios_base::app);
-        myfile << date << ": " << log << std::endl;
-        myfile.close();
+		std::ofstream file;
+		file.open("logs.txt", std::ofstream::app);
+        file << date << ": " << log << std::endl;
+        file.close();
     }
 }
 

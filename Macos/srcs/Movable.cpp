@@ -1,8 +1,8 @@
 #include "Movable.h"
 
-Movable::Movable(int x, int y)
+Movable::Movable(int x, int y) :
+	Entity(x, y)
 {
-    mPos = sf::Vector2i(x, y);
 }
 
 // int Movable::isEmpty(int cell, int weight)
@@ -11,6 +11,18 @@ Movable::Movable(int x, int y)
 //         return (0);
 //     return (1);
 // }
+
+void Movable::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	sf::RectangleShape  cell;
+	sf::Vector2f        offset(15, 50);
+
+	cell.setSize(sf::Vector2f(15, 15));
+	cell.setOutlineColor(sf::Color::Blue);
+	cell.setOutlineThickness(5);
+	cell.setPosition(offset.x + mPos.x * 28, offset.y + mPos.y * 28);
+	target.draw(cell, states);
+}
 
 int Movable::validCell(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize, int weight)
 {
@@ -115,6 +127,12 @@ void Movable::copyBlock(std::vector<std::vector<int>> &pathMap, Map &map)
 
 void Movable::goTo(sf::Vector2i pos, Map &map)
 {
+	if (this->showPath(pos, map))
+		mPos = pos;
+}
+
+int Movable::showPath(sf::Vector2i pos, Map &map)
+{
 	sf::Vector2i				mapSize(map.getSize());
 	std::vector<std::vector<int>>	pathMap(mapSize.y);
 	// int				pathMap[mapSize.y][mapSize.x];
@@ -132,13 +150,11 @@ void Movable::goTo(sf::Vector2i pos, Map &map)
             // gameMap[cur.y][cur.x] = 10;
 			map.setCell(cur, 1, CellType::Path);
         }
-        mPos = pos;
+		return (1);
     }
-    else
-    {
-        Debug::log("Movable::goTo: map = " + Debug::to_str(pathMap, mapSize));
-        Debug::log("Movable::goTo: PATH NOT FIND !");
-    }
+	Debug::log("Movable::goTo: map = " + Debug::to_str(pathMap, mapSize));
+	Debug::log("Movable::goTo: PATH NOT FIND !");
+	return (0);
     // clearPaths(gameMap, mapSize);
 }
 

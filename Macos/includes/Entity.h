@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-class Entity
+class Entity : public sf::Drawable
 {
     public:
         Entity(int x = 0, int y = 0);
@@ -16,6 +16,7 @@ class Entity
         sf::Vector2i mPos;
 
     private:
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
 #endif // ENTITY_H

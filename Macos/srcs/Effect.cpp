@@ -162,25 +162,21 @@ void Effect::applyEffect(Map &map, int px, int py, Direction dir)
                         pos = sf::Vector2i(px - x + mOrigin.x, y + py - mOrigin.y);
                         if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y)
 							map.setCell(pos, mZone[y * mSize + x], CellType::Zone);
-                            // map[pos.y][pos.x] = mZone[y * mSize + x];
                     break;
                     case Up:
                         pos = sf::Vector2i(px + y - mOrigin.y, py - x + mOrigin.x);
                         if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y)
 							map.setCell(pos, mZone[y * mSize + x], CellType::Zone);
-                            // map[pos.y][pos.x] = mZone[y * mSize + x];
                     break;
                     case Down:
                         pos = sf::Vector2i(px + y - mOrigin.y, py + x - mOrigin.x);
                         if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y)
 							map.setCell(pos, mZone[y * mSize + x], CellType::Zone);
-                            // map[pos.y][pos.x] = mZone[y * mSize + x];
                     break;
                     default:
                         pos = sf::Vector2i(px + x - mOrigin.x, py + y - mOrigin.y);
                         if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y)
 							map.setCell(pos, mZone[y * mSize + x], CellType::Zone);
-                            // map[pos.y][pos.x] = mZone[y * mSize + x];
                     break;
                 }
             }
