@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 22:54:27 by qhonore           #+#    #+#             */
-/*   Updated: 2017/04/07 17:36:56 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/04/10 16:28:18 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,27 +134,29 @@ class Input
 		};
 
 		Input();
-		void	keyPressed(sf::Keyboard::Key key);
-		void	keyReleased(sf::Keyboard::Key key);
-		bool	getKey(sf::Keyboard::Key key);
-		void	setKey(sf::Keyboard::Key key, bool val);
-		bool	getMouse(sf::Mouse::Button button);
-		void	setMouse(sf::Mouse::Button button, bool val);
-		bool	getEntry(Entry entry);
-		void	setEntry(Entry entry, bool val);
-		void	clearEntries(void);
-		void	mousePressed(sf::Mouse::Button button, int x, int y);
-		void	mouseReleased(sf::Mouse::Button button, int x, int y);
-		void	mouseMoved(int x, int y);
-		int		getMouseX(void);
-		int		getMouseY(void);
-		bool	mouseHasMoved(void);
+		void			keyPressed(sf::Keyboard::Key key);
+		void			keyReleased(sf::Keyboard::Key key);
+		bool			getKey(sf::Keyboard::Key key);
+		void			setKey(sf::Keyboard::Key key, bool val);
+		bool			getMouseButton(sf::Mouse::Button button);
+		void			setMouseButton(sf::Mouse::Button button, bool val);
+		bool			getEntry(Entry entry);
+		void			setEntry(Entry entry, bool val);
+		void			clearEntries(void);
+		void			mousePressed(sf::Mouse::Button button, int x, int y);
+		void			mouseReleased(sf::Mouse::Button button, int x, int y);
+		void			mouseMoved(int x, int y);
+		sf::Vector2i	getMouse(void);
+		sf::Vector2i	getMousePressed(void);
+		sf::Vector2i	getMouseReleased(void);
+		bool			mouseHasMoved(void);
 
 	private:
-		bool	mEntries[Entry::EntryCount];
-		int		mMouseX;
-		int		mMouseY;
-		bool	mMouseMoved;
+		bool			mEntries[Entry::EntryCount];
+		sf::Vector2i	mMouse;
+		bool			mMouseMoved;
+		sf::Vector2i	mMousePressed;
+		sf::Vector2i	mMouseReleased;
 };
 
 #endif

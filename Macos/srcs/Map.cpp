@@ -15,7 +15,8 @@ T **initTab(T **tab, sf::Vector2i size)
 
 Map::Map(sf::Vector2i size) :
 	mSize(size),
-	mMouseCell(-1, -1)
+	mMouseCell(-1, -1),
+	mCellPressed(-1, -1)
 {
 	mCell = initTab(mCell, mSize);
 	mPlayer = initTab(mPlayer, mSize);
@@ -46,6 +47,26 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			target.draw(cell, states);
 		}
 	}
+}
+
+bool Map::mouseInBounds(int x, int y) const
+{
+	sf::Vector2i	offset(15, 50);
+	sf::Vector2i	pos((x - offset.x) / 28, (y - offset.y) / 28);
+
+	if (pos.y < mSize.y && pos.y >= 0 && pos.x < mSize.x && pos.x >= 0)
+		return (1);
+	return (0);
+}
+
+bool Map::mouseInBounds(sf::Vector2i pos) const
+{
+	sf::Vector2i	offset(15, 50);
+	pos = sf::Vector2i((pos.x - offset.x) / 28, (pos.y - offset.y) / 28);
+
+	if (pos.y < mSize.y && pos.y >= 0 && pos.x < mSize.x && pos.x >= 0)
+		return (1);
+	return (0);
 }
 
 bool Map::inBounds(sf::Vector2i pos) const
@@ -182,6 +203,20 @@ void Map::setMouseCell(int x, int y)
 sf::Vector2i Map::getMouseCell(void) const
 {
 	return (mMouseCell);
+}
+
+void Map::setCellPressed(int x, int y)
+{
+	sf::Vector2f	offset(15, 50);
+	sf::Vector2i	pos((x - offset.x) / 28, (y - offset.y) / 28);
+
+	if (this->inBounds(pos))
+		mCellPressed = pos;
+}
+
+sf::Vector2i Map::getCellPressed(void) const
+{
+	return (mCellPressed);
 }
 
 Map::~Map()

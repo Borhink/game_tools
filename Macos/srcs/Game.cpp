@@ -40,13 +40,24 @@ void	Game::inputHandler(void)
 
 	if (mInput->mouseHasMoved())
 	{
-		sf::Vector2i	mousePos(mInput->getMouseX(), mInput->getMouseY());
-		if (mMap->isMouseCellChanged(mousePos.x, mousePos.y, true))
-		{
+		if (mMap->isMouseCellChanged(mInput->getMouse().x, mInput->getMouse().y, true))
 			mPlayer->showPath(mMap->getMouseCell(), *mMap);
-			std::cout << "Mouse moved: x" << mMap->getMouseCell().x << " y" << mMap->getMouseCell().y << std::endl;
+	}
+	if (mInput->getEntry(Input::Entry::MLeft))
+	{
+		if (mMap->mouseInBounds(mInput->getMouse()))
+			mMap->setCellPressed(mInput->getMouse().x, mInput->getMouse().y);
+	}
+	else
+	{
+		sf::Vector2i	offset(15, 50);
+		sf::Vector2i	pos((mInput->getMouse().x - offset.x) / 28, (mInput->getMouse().y - offset.y) / 28);
+		std::cout << "Cell: x" << mMap->getCellPressed().x << ", y" << mMap->getCellPressed().y << std::endl;
+		std::cout << "Mouse: x" << mInput->getMouse().x << ", y" << mInput->getMouse().y << std::endl;
+		if (mMap->mouseInBounds(mInput->getMouse()) && pos == mMap->getCellPressed() && pos != mPlayer->getPos())
+		{
+			mPlayer->goTo(mMap->getMouseCell(), *mMap);
 		}
-		// mInput->getMouseX() >= 15 &&)
 	}
 	// if (mCurMenu.top() == Game::MenuType::None)
 	// 	mPlay->update(mInput, mKeyBind);

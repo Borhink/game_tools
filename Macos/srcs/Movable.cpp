@@ -114,7 +114,10 @@ void Movable::copyBlock(std::vector<std::vector<int>> &pathMap, Map &map)
 void Movable::goTo(sf::Vector2i pos, Map &map)
 {
 	if (this->showPath(pos, map))
+	{
 		mPos = pos;
+		map.clearPaths();
+	}
 }
 
 int Movable::showPath(sf::Vector2i pos, Map &map)
@@ -122,23 +125,26 @@ int Movable::showPath(sf::Vector2i pos, Map &map)
 	sf::Vector2i				mapSize(map.getSize());
 	std::vector<std::vector<int>>	pathMap(mapSize.y);
 
-	map.clearPaths();
-    Debug::log("Movable::goTo: pos.x = " + Debug::to_str(pos.x));
-    Debug::log("Movable::goTo: pos.y = " + Debug::to_str(pos.y));
-	copyBlock(pathMap, map);
-    if (pathfinding(pos, pathMap, mapSize))
-    {
-        Debug::log("Movable::goTo: map = " + Debug::to_str(pathMap, mapSize));
-        Debug::log("Movable::goTo: PATH FIND !");
-        for (sf::Vector2i cur(mPos); cur != pos;)
-        {
-            cur = getPath(cur, pathMap, mapSize);
-			map.setCell(cur, 1, CellType::Path);
-        }
-		return (1);
-    }
-	Debug::log("Movable::goTo: map = " + Debug::to_str(pathMap, mapSize));
-	Debug::log("Movable::goTo: PATH NOT FIND !");
+	if (map.inBounds(pos))
+	{
+		map.clearPaths();
+	    Debug::log("Movable::goTo: pos.x = " + Debug::to_str(pos.x));
+	    Debug::log("Movable::goTo: pos.y = " + Debug::to_str(pos.y));
+		copyBlock(pathMap, map);
+	    if (pathfinding(pos, pathMap, mapSize))
+	    {
+	        Debug::log("Movable::goTo: map = " + Debug::to_str(pathMap, mapSize));
+	        Debug::log("Movable::goTo: PATH FIND !");
+	        for (sf::Vector2i cur(mPos); cur != pos;)
+	        {
+	            cur = getPath(cur, pathMap, mapSize);
+				map.setCell(cur, 1, CellType::Path);
+	        }
+			return (1);
+	    }
+		Debug::log("Movable::goTo: map = " + Debug::to_str(pathMap, mapSize));
+		Debug::log("Movable::goTo: PATH NOT FIND !");
+	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 22:58:00 by qhonore           #+#    #+#             */
-/*   Updated: 2017/04/07 17:37:29 by qhonore          ###   ########.fr       */
+/*   Updated: 2017/04/10 16:29:23 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #include <iostream>
 
 Input::Input() :
-	mMouseX(0),
-	mMouseY(0),
-	mMouseMoved(false)
+	mMouse(0, 0),
+	mMouseMoved(false),
+	mMousePressed(0, 0),
+	mMouseReleased(0, 0)
 {
 	for (int i(0); i < Entry::EntryCount; i++)
 		mEntries[i] = false;
@@ -47,14 +48,14 @@ void	Input::setKey(sf::Keyboard::Key key, bool val)
 		mEntries[key] = val;
 }
 
-bool	Input::getMouse(sf::Mouse::Button button)
+bool	Input::getMouseButton(sf::Mouse::Button button)
 {
 	if (button >= 0 && button < sf::Mouse::Button::ButtonCount)
 		return (mEntries[button + Entry::MLeft]);
 	return (false);
 }
 
-void	Input::setMouse(sf::Mouse::Button button, bool val)
+void	Input::setMouseButton(sf::Mouse::Button button, bool val)
 {
 	if (button >= 0 && button < sf::Mouse::Button::ButtonCount)
 		mEntries[button + Entry::MLeft] = val;
@@ -83,33 +84,38 @@ void	Input::mousePressed(sf::Mouse::Button button, int x, int y)
 {
 	if (button >= 0 && button < sf::Mouse::Button::ButtonCount)
 		mEntries[button + Entry::MLeft] = true;
-	mMouseX = x;
-	mMouseY = y;
+	mMousePressed.x = x;
+	mMousePressed.y = y;
 }
 
 void	Input::mouseReleased(sf::Mouse::Button button, int x, int y)
 {
 	if (button >= 0 && button < sf::Mouse::Button::ButtonCount)
 		mEntries[button + Entry::MLeft] = false;
-	mMouseX = x;
-	mMouseY = y;
+	mMouseReleased.x = x;
+	mMouseReleased.y = y;
 }
 
 void	Input::mouseMoved(int x, int y)
 {
 	mMouseMoved = true;
-	mMouseX = x;
-	mMouseY = y;
+	mMouse.x = x;
+	mMouse.y = y;
 }
 
-int		Input::getMouseX(void)
+sf::Vector2i	Input::getMouse(void)
 {
-	return (mMouseX);
+	return (mMouse);
 }
 
-int		Input::getMouseY(void)
+sf::Vector2i	Input::getMousePressed(void)
 {
-	return (mMouseY);
+	return (mMousePressed);
+}
+
+sf::Vector2i	Input::getMouseReleased(void)
+{
+	return (mMouseReleased);
 }
 
 bool	Input::mouseHasMoved(void)
