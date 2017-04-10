@@ -23,6 +23,8 @@ class Map : public sf::Drawable
 		virtual ~Map();
 		bool inBounds(sf::Vector2i pos) const;
 		bool inBounds(int x, int y) const;
+		bool isMouseCellChanged(int x, int y, bool update = false);
+		void clearPaths(void);
 		int getCell(sf::Vector2i pos, CellType type = CellType::None) const;
 		int getCell(int x, int y, CellType type = CellType::None) const;
 		void setCell(sf::Vector2i pos, int val, CellType type = CellType::None);
@@ -32,6 +34,8 @@ class Map : public sf::Drawable
 		void setPlayer(sf::Vector2i pos, int val);
 		void setPlayer(int x, int y, int val);
 		sf::Vector2i getSize() const;
+		void setMouseCell(int x, int y);
+		sf::Vector2i getMouseCell(void) const;
 
 	private:
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -39,6 +43,7 @@ class Map : public sf::Drawable
 		int				**mCell;
 		int				**mPlayer;
 		sf::Vector2i	mSize;
+		sf::Vector2i	mMouseCell;
 };
 
 #endif // MAP_H

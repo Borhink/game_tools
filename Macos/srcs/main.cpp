@@ -26,8 +26,8 @@ int main()
 	float				elapsed(0);
 
 
-	game.getPlayer()->useSpell(*(game.getMap()), sf::Vector2i(12, 10));
-	game.getPlayer()->showPath(sf::Vector2i(3, 18), *(game.getMap()));
+	// game.getPlayer()->useSpell(*(game.getMap()), sf::Vector2i(12, 10));
+	// game.getPlayer()->showPath(sf::Vector2i(3, 18), *(game.getMap()));
 	while (window.isOpen())
     {
 		elapsed += updateTime.getElapsedTime().asSeconds();

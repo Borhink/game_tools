@@ -23,7 +23,6 @@ class Movable : public Entity
         int getWeight(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize);
         sf::Vector2i getPath(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize);
 		void copyBlock(std::vector<std::vector<int>> &pathMap, Map &map);
-        // void clearPaths(int **gameMap, int mapSize);
 
     private:
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

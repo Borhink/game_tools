@@ -13,7 +13,9 @@ T **initTab(T **tab, sf::Vector2i size)
 	return (tab);
 }
 
-Map::Map(sf::Vector2i size): mSize(size)
+Map::Map(sf::Vector2i size) :
+	mSize(size),
+	mMouseCell(-1, -1)
 {
 	mCell = initTab(mCell, mSize);
 	mPlayer = initTab(mPlayer, mSize);
@@ -58,6 +60,27 @@ bool Map::inBounds(int x, int y) const
 	if (y < mSize.y && y >= 0 && x < mSize.x && x >= 0)
 		return (1);
 	return (0);
+}
+
+bool Map::isMouseCellChanged(int x, int y, bool update)
+{
+	sf::Vector2f	offset(15, 50);
+	sf::Vector2i	pos((x - offset.x) / 28, (y - offset.y) / 28);
+
+	if (mMouseCell.x != pos.x || mMouseCell.y != pos.y)
+	{
+		if (update)
+			this->setMouseCell(x, y);
+		return (true);
+	}
+	return (false);
+}
+
+void Map::clearPaths(void)
+{
+	for (int y(0); y < mSize.y; y++)
+		for (int x(0); x < mSize.x; x++)
+			this->setCell(x, y, 0, CellType::Path);
 }
 
 int Map::getCell(sf::Vector2i pos, CellType type) const
@@ -145,6 +168,20 @@ void Map::setPlayer(int x, int y, int val)
 sf::Vector2i Map::getSize() const
 {
 	return (mSize);
+}
+
+void Map::setMouseCell(int x, int y)
+{
+	sf::Vector2f	offset(15, 50);
+	sf::Vector2i	pos((x - offset.x) / 28, (y - offset.y) / 28);
+
+	if (this->inBounds(pos))
+		mMouseCell = pos;
+}
+
+sf::Vector2i Map::getMouseCell(void) const
+{
+	return (mMouseCell);
 }
 
 Map::~Map()

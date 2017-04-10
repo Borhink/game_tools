@@ -40,7 +40,12 @@ void	Game::inputHandler(void)
 
 	if (mInput->mouseHasMoved())
 	{
-		std::cout << "Mouse moved: x" << mInput->getMouseX() << " y" << mInput->getMouseY() << std::endl;
+		sf::Vector2i	mousePos(mInput->getMouseX(), mInput->getMouseY());
+		if (mMap->isMouseCellChanged(mousePos.x, mousePos.y, true))
+		{
+			mPlayer->showPath(mMap->getMouseCell(), *mMap);
+			std::cout << "Mouse moved: x" << mMap->getMouseCell().x << " y" << mMap->getMouseCell().y << std::endl;
+		}
 		// mInput->getMouseX() >= 15 &&)
 	}
 	// if (mCurMenu.top() == Game::MenuType::None)

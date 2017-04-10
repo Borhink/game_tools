@@ -99,20 +99,6 @@ sf::Vector2i Movable::getPath(sf::Vector2i pos, std::vector<std::vector<int>> &g
     return (path);
 }
 
-// void Movable::clearPaths(Map &map)
-// {
-// 	sf::Vector2i	size(map.getSize());
-//
-//     for (int y(0); y < size.y; y++)
-//     {
-//         for (int x(0); x < size.x; x++)
-//         {
-//             if (gameMap[y][x] >= 100)
-//                 gameMap[y][x] = 0;
-//         }
-//     }
-// }
-
 void Movable::copyBlock(std::vector<std::vector<int>> &pathMap, Map &map)
 {
 	sf::Vector2i	size(map.getSize());
@@ -135,8 +121,8 @@ int Movable::showPath(sf::Vector2i pos, Map &map)
 {
 	sf::Vector2i				mapSize(map.getSize());
 	std::vector<std::vector<int>>	pathMap(mapSize.y);
-	// int				pathMap[mapSize.y][mapSize.x];
 
+	map.clearPaths();
     Debug::log("Movable::goTo: pos.x = " + Debug::to_str(pos.x));
     Debug::log("Movable::goTo: pos.y = " + Debug::to_str(pos.y));
 	copyBlock(pathMap, map);
@@ -147,7 +133,6 @@ int Movable::showPath(sf::Vector2i pos, Map &map)
         for (sf::Vector2i cur(mPos); cur != pos;)
         {
             cur = getPath(cur, pathMap, mapSize);
-            // gameMap[cur.y][cur.x] = 10;
 			map.setCell(cur, 1, CellType::Path);
         }
 		return (1);
@@ -155,7 +140,6 @@ int Movable::showPath(sf::Vector2i pos, Map &map)
 	Debug::log("Movable::goTo: map = " + Debug::to_str(pathMap, mapSize));
 	Debug::log("Movable::goTo: PATH NOT FIND !");
 	return (0);
-    // clearPaths(gameMap, mapSize);
 }
 
 Movable::~Movable()
