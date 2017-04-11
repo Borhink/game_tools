@@ -9,6 +9,8 @@
 #include "Map.h"
 #include "Game.h"
 
+#include <stdlib.h>
+
 #define TICK_PER_SECOND 1.0f / 60.0f
 
 int main()

@@ -1,9 +1,33 @@
 #include "Effect.h"
 
-Effect::Effect(std::string zone)
+Effect::Effect(std::string effect):
+	mType(Effect::Damage),
+	mMin(1),
+	mMax(1)
 {
-    Debug::log("Effect::Effect(\"" + zone + "\")");
-    this->createEffectZone(zone);
+	std::vector<std::string> split;
+	size_t pos = 0;
+
+	while ((pos = effect.find(',')) != std::string::npos)
+	{
+		split.push_back(effect.substr(0, pos));
+		effect.erase(0, pos + 1);
+	}
+	split.push_back(effect);
+	if (split.size() > 0 && !split.at(0).empty())
+		this->createEffectZone(split.at(0));
+	else
+		this->createEffectZone("default");
+	if (split.size() > 1 && !split.at(1).empty())
+		mType = (Effect::Type)stoi(split.at(1));
+	if (split.size() > 2 && !split.at(2).empty())
+		mMin = stoi(split.at(2));
+	if (split.size() > 3 && !split.at(3).empty())
+		mMax = stoi(split.at(3));
+	std::cout << "Zone:" << Debug::to_str(mZone, mSize) << std::endl;
+	std::cout << "mType " << mType << std::endl;
+	std::cout << "mMin " << mMin << std::endl;
+	std::cout << "mMax " << mMax << std::endl;
 }
 
 /*

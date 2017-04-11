@@ -19,6 +19,15 @@ class Effect
             Up
         };
 
+		enum Type
+		{
+			None = 0,
+			Damage,
+			Heal,
+
+			TypeCount
+		};
+
         Effect(std::string zone);
         void createEffectZone(std::string);
         void applyEffect(Map &map, int px, int py, Direction dir);
@@ -28,6 +37,9 @@ class Effect
         int*            mZone;
         int             mSize;
         sf::Vector2i    mOrigin;
+		Type			mType;
+		int				mMin;
+		int				mMax;
 };
 
 #endif // EFFECT_H

@@ -2,7 +2,7 @@
 
 Player::Player(int x, int y, int pm) :
 	Movable(x, y, pm),
-	mSpell(new Spell("X2;V6"))
+	mSpell(new Spell("X1,1,20,25;V3,1,10,12"))
 {
 }
 

@@ -43,7 +43,7 @@ void	Game::mouseClicHandler(sf::Event *event)
 	if (event->type == sf::Event::MouseButtonReleased)
 	{
 		mInput->mouseReleased(event->mouseButton.button, event->mouseButton.x, event->mouseButton.y);
-		if (mMap->getMouseCell() == mMap->getCellPressed())
+		if (!mInput->getEntry(Input::MLeft) && mMap->getMouseCell() == mMap->getCellPressed())
 			mPlayer->goTo(mMap->getMouseCell(), *mMap);
 		else
 			mPlayer->showPath(mMap->getMouseCell(), *mMap);
