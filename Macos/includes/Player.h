@@ -12,6 +12,7 @@ class Player : public Movable
 {
 	public:
 		Player(int x = 0, int y = 0);
+		Player(int x = 0, int y = 0, int pm = 3);
 		virtual ~Player();
 		void useSpell(Map &map, sf::Vector2i pos);
 

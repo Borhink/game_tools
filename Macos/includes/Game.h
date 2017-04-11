@@ -13,6 +13,7 @@ class Game
         virtual ~Game();
 		void render(void);
 		void update(sf::Event *event);
+		void mouseClicHandler(sf::Event *event);
 		void inputHandler(void);
 		class Player *getPlayer();
 		Map *getMap();

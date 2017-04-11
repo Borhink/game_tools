@@ -1,7 +1,14 @@
 #include "Movable.h"
 
 Movable::Movable(int x, int y) :
-	Entity(x, y)
+	Entity(x, y),
+	mPm(0)
+{
+}
+
+Movable::Movable(int x, int y, int pm) :
+	Entity(x, y),
+	mPm(pm)
 {
 }
 
@@ -111,6 +118,14 @@ void Movable::copyBlock(std::vector<std::vector<int>> &pathMap, Map &map)
 	}
 }
 
+int Movable::getCellDist(Map &map) const
+{
+	int		dist;
+
+	dist = abs(map.getMouseCell().x - mPos.x) + abs(map.getMouseCell().y - mPos.y);
+	return (dist);
+}
+
 void Movable::goTo(sf::Vector2i pos, Map &map)
 {
 	if (this->showPath(pos, map))
@@ -122,12 +137,13 @@ void Movable::goTo(sf::Vector2i pos, Map &map)
 
 int Movable::showPath(sf::Vector2i pos, Map &map)
 {
-	sf::Vector2i				mapSize(map.getSize());
+	sf::Vector2i					mapSize(map.getSize());
 	std::vector<std::vector<int>>	pathMap(mapSize.y);
+	int								pm(mPm);
 
-	if (map.inBounds(pos))
+	map.clearPaths();
+	if (map.inBounds(pos) && map.getMouseCell() != mPos && getCellDist(map) <= mPm)
 	{
-		map.clearPaths();
 	    Debug::log("Movable::goTo: pos.x = " + Debug::to_str(pos.x));
 	    Debug::log("Movable::goTo: pos.y = " + Debug::to_str(pos.y));
 		copyBlock(pathMap, map);
@@ -137,8 +153,14 @@ int Movable::showPath(sf::Vector2i pos, Map &map)
 	        Debug::log("Movable::goTo: PATH FIND !");
 	        for (sf::Vector2i cur(mPos); cur != pos;)
 	        {
+				if (pm == 0)
+				{
+					map.clearPaths();
+					return (0);
+				}
 	            cur = getPath(cur, pathMap, mapSize);
 				map.setCell(cur, 1, CellType::Path);
+				pm--;
 	        }
 			return (1);
 	    }

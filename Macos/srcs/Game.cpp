@@ -4,7 +4,7 @@ Game::Game(sf::RenderWindow	*window) :
 	mInput(new Input()),
 	mWindow(window),
 	mMap(new Map(sf::Vector2i(20, 20))),
-	mPlayer(new class Player(10, 10))
+	mPlayer(new class Player(10, 10, 7))
 {
     //ctor
 }
@@ -25,14 +25,29 @@ void	Game::update(sf::Event *event)
 			mInput->keyPressed(event->key.code);
 		if (event->type == sf::Event::KeyReleased)
 			mInput->keyReleased(event->key.code);
-		if (event->type == sf::Event::MouseButtonPressed)
-			mInput->mousePressed(event->mouseButton.button, event->mouseButton.x, event->mouseButton.y);
-		if (event->type == sf::Event::MouseButtonReleased)
-			mInput->mouseReleased(event->mouseButton.button, event->mouseButton.x, event->mouseButton.y);
 		if (event->type == sf::Event::MouseMoved)
 			mInput->mouseMoved(event->mouseMove.x, event->mouseMove.y);
+		mouseClicHandler(event);
 	}
 	inputHandler();
+}
+
+void	Game::mouseClicHandler(sf::Event *event)
+{
+	if (event->type == sf::Event::MouseButtonPressed)
+	{
+		mInput->mousePressed(event->mouseButton.button, event->mouseButton.x, event->mouseButton.y);
+		if (mMap->mouseInBounds(mInput->getMouse()))
+			mMap->setCellPressed(mInput->getMouse().x, mInput->getMouse().y);
+	}
+	if (event->type == sf::Event::MouseButtonReleased)
+	{
+		mInput->mouseReleased(event->mouseButton.button, event->mouseButton.x, event->mouseButton.y);
+		if (mMap->getMouseCell() == mMap->getCellPressed())
+			mPlayer->goTo(mMap->getMouseCell(), *mMap);
+		else
+			mPlayer->showPath(mMap->getMouseCell(), *mMap);
+	}
 }
 
 void	Game::inputHandler(void)
@@ -40,37 +55,9 @@ void	Game::inputHandler(void)
 
 	if (mInput->mouseHasMoved())
 	{
-		if (mMap->isMouseCellChanged(mInput->getMouse().x, mInput->getMouse().y, true))
+		if (mMap->isMouseCellChanged(mInput->getMouse().x, mInput->getMouse().y, true) && !mInput->getEntry(Input::MLeft))
 			mPlayer->showPath(mMap->getMouseCell(), *mMap);
 	}
-	if (mInput->getEntry(Input::Entry::MLeft))
-	{
-		if (mMap->mouseInBounds(mInput->getMouse()))
-			mMap->setCellPressed(mInput->getMouse().x, mInput->getMouse().y);
-	}
-	else
-	{
-		sf::Vector2i	offset(15, 50);
-		sf::Vector2i	pos((mInput->getMouse().x - offset.x) / 28, (mInput->getMouse().y - offset.y) / 28);
-		std::cout << "Cell: x" << mMap->getCellPressed().x << ", y" << mMap->getCellPressed().y << std::endl;
-		std::cout << "Mouse: x" << mInput->getMouse().x << ", y" << mInput->getMouse().y << std::endl;
-		if (mMap->mouseInBounds(mInput->getMouse()) && pos == mMap->getCellPressed() && pos != mPlayer->getPos())
-		{
-			mPlayer->goTo(mMap->getMouseCell(), *mMap);
-		}
-	}
-	// if (mCurMenu.top() == Game::MenuType::None)
-	// 	mPlay->update(mInput, mKeyBind);
-	// else
-	// 	mMenus[mCurMenu.top()]->update(mInput, mKeyBind);
-	// if (mInput->getEntry(mKeyBind->getEntry("START")))
-	// {
-	// 	if (mCurMenu.top() != Game::MenuType::Start && mCurMenu.top() != Game::MenuType::None)
-	// 		mCurMenu.pop();
-	// 	if (mCurMenu.top() == Game::MenuType::None)
-	// 		mCurMenu.push(Game::MenuType::Pause);
-	// 	mInput->setEntry(mKeyBind->getEntry("START"), false);
-	// }
 }
 
 class Player *Game::getPlayer()

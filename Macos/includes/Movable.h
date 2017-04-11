@@ -11,6 +11,7 @@ class Movable : public Entity
 {
     public:
         Movable(int x = 0, int y = 0);
+		Movable(int x = 0, int y = 0, int pm = 0);
         virtual ~Movable();
         void goTo(sf::Vector2i pos, Map &map);
         int showPath(sf::Vector2i pos, Map &map);
@@ -23,9 +24,12 @@ class Movable : public Entity
         int getWeight(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize);
         sf::Vector2i getPath(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize);
 		void copyBlock(std::vector<std::vector<int>> &pathMap, Map &map);
+		int getCellDist(Map &map) const;
 
     private:
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+		int mPm;
 };
 
 #endif // MOVABLE_H

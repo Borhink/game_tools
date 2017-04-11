@@ -1,7 +1,13 @@
 #include "Player.h"
 
 Player::Player(int x, int y) :
-	Movable(x, y),
+	Movable(x, y, 3),
+	mSpell(new Spell("X2;V6"))
+{
+}
+
+Player::Player(int x, int y, int pm) :
+	Movable(x, y, pm),
 	mSpell(new Spell("X2;V6"))
 {
 }
