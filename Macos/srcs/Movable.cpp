@@ -142,7 +142,7 @@ int Movable::showPath(sf::Vector2i pos, Map &map)
 	int								pm(mPm);
 
 	map.clearPaths();
-	if (map.inBounds(pos) && map.getMouseCell() != mPos && getCellDist(map) <= mPm)
+	if (map.inBounds(pos) && map.getMouseCell() != mPos && getCellDist(map) <= mPm && !map.getCell(pos, CellType::Block))
 	{
 	    Debug::log("Movable::goTo: pos.x = " + Debug::to_str(pos.x));
 	    Debug::log("Movable::goTo: pos.y = " + Debug::to_str(pos.y));
