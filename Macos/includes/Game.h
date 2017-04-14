@@ -19,6 +19,7 @@ class Game
 		Map *getMap();
 
 	private:
+
 		Input *mInput;
 		sf::RenderWindow *mWindow;
 		Map *mMap;

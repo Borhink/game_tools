@@ -13,7 +13,12 @@ class Player : public Movable
 	public:
 		Player(int x = 0, int y = 0, int pm = 3);
 		virtual ~Player();
-		void useSpell(Map &map, sf::Vector2i pos);
+		bool showSpell(Map &map);
+		void useSpell(Map &map);
+		void mouseAction(Map &map);
+		void updateSelectedSpell(int id, Map &map);
+		void setSelectedSpell(int id);
+		int getSelectedSpell(void) const;
 
 	protected:
 
@@ -21,6 +26,7 @@ class Player : public Movable
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 		Spell *mSpell;
+		int mSelectSpell;
 };
 
 #endif // PLAYER_H

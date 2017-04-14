@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "Player.h"
 
 template <typename T>
 T **initTab(T **tab, sf::Vector2i size)
@@ -25,25 +26,23 @@ Map::Map(sf::Vector2i size) :
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	sf::RectangleShape  cell;
-	sf::Vector2f        offset(15, 50);
 
-	cell.setSize(sf::Vector2f(15, 15));
-	cell.setOutlineColor(sf::Color::White);
-	cell.setOutlineThickness(5);
-	cell.setPosition(offset);
+	cell.setSize(sf::Vector2f(20, 20));
+	cell.setFillColor(sf::Color::White);
+	cell.setPosition(0, 0);
 	for (int y(0); y < mSize.y; y++)
 	{
 		for (int x(0); x < mSize.x; x++)
 		{
 			if (this->getCell(x, y, CellType::Block))//Block sur la map
-				cell.setOutlineColor(sf::Color(155, 155, 155, 255));
+				cell.setFillColor(sf::Color(155, 155, 155, 255));
 			else
-				cell.setOutlineColor(sf::Color::White);//Vide
+				cell.setFillColor(sf::Color::White);//Vide
 			if (this->getCell(x, y, CellType::Zone))//Zone de sort
-				cell.setOutlineColor(sf::Color::Red);
+				cell.setFillColor(sf::Color::Red);
 			if (this->getCell(x, y, CellType::Path))//Chemin pathfinding
-				cell.setOutlineColor(sf::Color::Green);
-			cell.setPosition(offset.x + x * 28, offset.y + y * 28);
+				cell.setFillColor(sf::Color::Green);
+			cell.setPosition(x * 22, y * 22);
 			target.draw(cell, states);
 		}
 	}
@@ -51,8 +50,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 bool Map::mouseInBounds(int x, int y) const
 {
-	sf::Vector2i	offset(15, 50);
-	sf::Vector2i	pos((x - offset.x) / 28, (y - offset.y) / 28);
+	sf::Vector2i	pos(x / 22, y / 22);
 
 	if (pos.y < mSize.y && pos.y >= 0 && pos.x < mSize.x && pos.x >= 0)
 		return (1);
@@ -61,8 +59,7 @@ bool Map::mouseInBounds(int x, int y) const
 
 bool Map::mouseInBounds(sf::Vector2i pos) const
 {
-	sf::Vector2i	offset(15, 50);
-	pos = sf::Vector2i((pos.x - offset.x) / 28, (pos.y - offset.y) / 28);
+	pos = sf::Vector2i(pos.x / 22, pos.y / 22);
 
 	if (pos.y < mSize.y && pos.y >= 0 && pos.x < mSize.x && pos.x >= 0)
 		return (1);
@@ -83,25 +80,25 @@ bool Map::inBounds(int x, int y) const
 	return (0);
 }
 
-bool Map::isMouseCellChanged(int x, int y, bool update)
+void Map::updateMouseCell(sf::Vector2i mouse, class Player &player)
 {
-	sf::Vector2f	offset(15, 50);
-	sf::Vector2i	pos((x - offset.x) / 28, (y - offset.y) / 28);
+	sf::Vector2i	pos(mouse.x / 22, mouse.y / 22);
 
 	if (mMouseCell.x != pos.x || mMouseCell.y != pos.y)
 	{
-		if (update)
-			this->setMouseCell(x, y);
-		return (true);
+		mMouseCell = pos;
+		if (player.getSelectedSpell())
+			player.showSpell(*this);
+		else
+			player.showPath(*this);
 	}
-	return (false);
 }
 
-void Map::clearPaths(void)
+void Map::clear(CellType type)
 {
 	for (int y(0); y < mSize.y; y++)
 		for (int x(0); x < mSize.x; x++)
-			this->setCell(x, y, 0, CellType::Path);
+			this->setCell(x, y, 0, type);
 }
 
 int Map::getCell(sf::Vector2i pos, CellType type) const
@@ -193,8 +190,7 @@ sf::Vector2i Map::getSize() const
 
 void Map::setMouseCell(int x, int y)
 {
-	sf::Vector2f	offset(15, 50);
-	sf::Vector2i	pos((x - offset.x) / 28, (y - offset.y) / 28);
+	sf::Vector2i	pos(x / 22, y / 22);
 
 	if (this->inBounds(pos))
 		mMouseCell = pos;
@@ -207,8 +203,7 @@ sf::Vector2i Map::getMouseCell(void) const
 
 void Map::setCellPressed(int x, int y)
 {
-	sf::Vector2f	offset(15, 50);
-	sf::Vector2i	pos((x - offset.x) / 28, (y - offset.y) / 28);
+	sf::Vector2i	pos(x / 22, y / 22);
 
 	if (this->inBounds(pos))
 		mCellPressed = pos;
@@ -217,6 +212,11 @@ void Map::setCellPressed(int x, int y)
 sf::Vector2i Map::getCellPressed(void) const
 {
 	return (mCellPressed);
+}
+
+bool Map::validClic() const
+{
+	return (mMouseCell == mCellPressed);
 }
 
 Map::~Map()

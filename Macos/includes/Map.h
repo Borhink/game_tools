@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+class Player;
+
 enum CellType
 {
 	None = 0,
@@ -25,8 +27,8 @@ class Map : public sf::Drawable
 		bool mouseInBounds(sf::Vector2i pos) const;
 		bool inBounds(sf::Vector2i pos) const;
 		bool inBounds(int x, int y) const;
-		bool isMouseCellChanged(int x, int y, bool update = false);
-		void clearPaths(void);
+		void updateMouseCell(sf::Vector2i mouse, class Player &player);
+		void clear(CellType type = CellType::None);
 		int getCell(sf::Vector2i pos, CellType type = CellType::None) const;
 		int getCell(int x, int y, CellType type = CellType::None) const;
 		void setCell(sf::Vector2i pos, int val, CellType type = CellType::None);
@@ -40,6 +42,7 @@ class Map : public sf::Drawable
 		sf::Vector2i getMouseCell(void) const;
 		void setCellPressed(int x, int y);
 		sf::Vector2i getCellPressed(void) const;
+		bool validClic() const;
 
 	private:
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

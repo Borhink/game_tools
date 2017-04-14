@@ -31,6 +31,7 @@ class Effect
         Effect(std::string zone);
         void createEffectZone(std::string);
         void applyEffect(Map &map, int px, int py, Direction dir);
+        void showEffectZone(Map &map, int px, int py, Direction dir);
         virtual ~Effect();
     protected:
     private:

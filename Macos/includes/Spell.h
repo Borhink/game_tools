@@ -14,10 +14,13 @@ class Spell
     public:
         Spell(std::string effects);
         virtual ~Spell();
-        void use(Map &map, sf::Vector2i player, sf::Vector2i pos);
+        void show(Map &map, sf::Vector2i player);
+        void use(Map &map, sf::Vector2i player);
         void add_effect(std::string effect);
     private:
         std::vector<Effect*> mEffects;
+		// int mPo;
+		// int mPa;
 };
 
 #endif // SPELL_H

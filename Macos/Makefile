@@ -6,7 +6,7 @@
 #    By: mgallo <mgallo@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/01/25 18:33:02 by mgallo            #+#    #+#              #
-#    Updated: 2017/04/07 13:35:59 by qhonore          ###   ########.fr        #
+#    Updated: 2017/04/14 15:51:23 by qhonore          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ INC_PATH = ./includes/ ~/.brew/include
 LIB_PATH = ~/.brew/lib
 
 SRC_NAME = main.cpp Debug.cpp Effect.cpp Entity.cpp Movable.cpp\
-		Spell.cpp Map.cpp Game.cpp Input.cpp Player.cpp
+		Spell.cpp Map.cpp Game.cpp Input.cpp Player.cpp Pathfinder.cpp
 OBJ_NAME = $(SRC_NAME:.cpp=.o)
 LIB_NAME = -lm
 NAME = game_tools

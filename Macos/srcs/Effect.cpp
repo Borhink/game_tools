@@ -208,6 +208,52 @@ void Effect::applyEffect(Map &map, int px, int py, Direction dir)
     }
 }
 
+void Effect::showEffectZone(Map &map, int px, int py, Direction dir)
+{
+    sf::Vector2i	pos;
+	sf::Vector2i	mapSize(map.getSize());
+
+    Debug::log("Effect::applyEffect: dir = " + Debug::to_str(dir));
+    Debug::log("Effect::applyEffect: px = " + Debug::to_str(px));
+    Debug::log("Effect::applyEffect: py = " + Debug::to_str(py));
+    Debug::log("Effect::applyEffect: mapSize = " + Debug::to_str(mapSize));
+    Debug::log("Effect::applyEffect: map = " + Debug::to_str(map));
+    Debug::log("Effect::applyEffect: mSize = " + Debug::to_str(mSize));
+    Debug::log("Effect::applyEffect: mZone = " + Debug::to_str(mZone, mSize));
+    for (int y(0); y < mSize; y++)
+    {
+        for (int x(0); x < mSize; x++)
+        {
+            if (mZone[y * mSize + x] == 1)
+            {
+                switch (dir)
+                {
+                    case Left:
+                        pos = sf::Vector2i(px - x + mOrigin.x, y + py - mOrigin.y);
+                        if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y)
+							map.setCell(pos, mZone[y * mSize + x], CellType::Zone);
+                    break;
+                    case Up:
+                        pos = sf::Vector2i(px + y - mOrigin.y, py - x + mOrigin.x);
+                        if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y)
+							map.setCell(pos, mZone[y * mSize + x], CellType::Zone);
+                    break;
+                    case Down:
+                        pos = sf::Vector2i(px + y - mOrigin.y, py + x - mOrigin.x);
+                        if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y)
+							map.setCell(pos, mZone[y * mSize + x], CellType::Zone);
+                    break;
+                    default:
+                        pos = sf::Vector2i(px + x - mOrigin.x, py + y - mOrigin.y);
+                        if (pos.x >= 0 && pos.y >= 0 && pos.x < mapSize.x && pos.y < mapSize.y)
+							map.setCell(pos, mZone[y * mSize + x], CellType::Zone);
+                    break;
+                }
+            }
+        }
+    }
+}
+
 Effect::~Effect()
 {
     free(mZone);

@@ -28,7 +28,6 @@ int main()
 	float				elapsed(0);
 
 
-	// game.getPlayer()->useSpell(*(game.getMap()), sf::Vector2i(12, 10));
 	while (window.isOpen())
     {
 		elapsed += updateTime.getElapsedTime().asSeconds();
@@ -43,8 +42,8 @@ int main()
 		{
 			window.clear(sf::Color::Black);
 			game.render();
-			Debug::drawText(&window, "FPS: " + Debug::to_str(fps), 2, 0, sf::Color::White, 15);
-			Debug::drawText(&window, "UPS: " + Debug::to_str(ups), 2, 15, sf::Color::White, 15);
+			// Debug::drawText(&window, "FPS: " + Debug::to_str(fps), 2, 0, sf::Color::White, 15);
+			// Debug::drawText(&window, "UPS: " + Debug::to_str(ups), 2, 15, sf::Color::White, 15);
 			window.display();
 			frames++;
 		}
