@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 class Player;
+class Input;
 
 enum CellType
 {
@@ -23,11 +24,14 @@ class Map : public sf::Drawable
 
 		Map(sf::Vector2i size);
 		virtual ~Map();
+		void update(Input &input, int type);
+		sf::Vector2i mouseToPos(sf::Vector2i mouse) const;
+		sf::Vector2i mouseToPos(int x, int y) const;
 		bool mouseInBounds(int x, int y) const;
 		bool mouseInBounds(sf::Vector2i pos) const;
 		bool inBounds(sf::Vector2i pos) const;
 		bool inBounds(int x, int y) const;
-		void updateMouseCell(sf::Vector2i mouse, class Player &player);
+		bool mouseCellChanged(void);
 		void clear(CellType type = CellType::None);
 		int getCell(sf::Vector2i pos, CellType type = CellType::None) const;
 		int getCell(int x, int y, CellType type = CellType::None) const;
@@ -39,8 +43,9 @@ class Map : public sf::Drawable
 		void setPlayer(int x, int y, int val);
 		sf::Vector2i getSize() const;
 		void setMouseCell(int x, int y);
+		void setMouseCell(sf::Vector2i mouse);
 		sf::Vector2i getMouseCell(void) const;
-		void setCellPressed(int x, int y);
+		void setCellPressed(sf::Vector2i mouse);
 		sf::Vector2i getCellPressed(void) const;
 		bool validClic() const;
 
@@ -52,6 +57,7 @@ class Map : public sf::Drawable
 		sf::Vector2i	mSize;
 		sf::Vector2i	mMouseCell;
 		sf::Vector2i	mCellPressed;
+		bool			mMouseCellChanged;
 };
 
 #endif // MAP_H

@@ -37,34 +37,19 @@ void	Game::mouseClicHandler(sf::Event *event)
 	if (event->type == sf::Event::MouseButtonPressed)
 	{
 		mInput->mousePressed(event->mouseButton.button, event->mouseButton.x, event->mouseButton.y);
-		if (mInput->getEntry(Input::MLeft) && mMap->mouseInBounds(mInput->getMouse()))
-			mMap->setCellPressed(mInput->getMouse().x, mInput->getMouse().y);
+		mMap->update(*mInput, event->type);
 	}
 	if (event->type == sf::Event::MouseButtonReleased)
 	{
 		mInput->mouseReleased(event->mouseButton.button, event->mouseButton.x, event->mouseButton.y);
-		if (!mInput->getEntry(Input::MLeft))
-			mPlayer->mouseAction(*mMap);
+		mPlayer->update(*mInput, *mMap, event->type);
 	}
 }
 
 void	Game::inputHandler(void)
 {
-
-	if (mInput->mouseHasMoved())
-	{
-		if (!mInput->getEntry(Input::MLeft))
-			mMap->updateMouseCell(mInput->getMouse(), *mPlayer);
-	}
-	if (mInput->getEntry(Input::MRight))
-		mMap->setCell(mMap->getMouseCell(), 1, CellType::Block);
-	if (mInput->getEntry(Input::MMiddle))
-		mMap->setCell(mMap->getMouseCell(), 0, CellType::Block);
-	if (mInput->getEntry(Input::Num1))
-	{
-		mPlayer->updateSelectedSpell(1, *mMap);
-		mInput->keyReleased((sf::Keyboard::Key)Input::Num1);
-	}
+	mMap->update(*mInput, -1);
+	mPlayer->update(*mInput, *mMap, sf::Event::MouseMoved);
 }
 
 class Player *Game::getPlayer()

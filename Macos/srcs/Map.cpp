@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "Player.h"
+#include "Input.h"
 
 template <typename T>
 T **initTab(T **tab, sf::Vector2i size)
@@ -17,7 +18,8 @@ T **initTab(T **tab, sf::Vector2i size)
 Map::Map(sf::Vector2i size) :
 	mSize(size),
 	mMouseCell(-1, -1),
-	mCellPressed(-1, -1)
+	mCellPressed(-1, -1),
+	mMouseCellChanged(false)
 {
 	mCell = initTab(mCell, mSize);
 	mPlayer = initTab(mPlayer, mSize);
@@ -48,18 +50,46 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
+void Map::update(Input &input, int type)
+{
+	if (type == sf::Event::MouseButtonPressed)
+	{
+		if (input.getEntry(Input::MLeft))
+			mCellPressed = mouseToPos(input.getMouse());
+	}
+	else if (type == -1)
+	{
+		if (input.mouseHasMoved())
+			this->setMouseCell(input.getMouse());
+		if (input.getEntry(Input::MRight))
+			this->setCell(this->getMouseCell(), 1, CellType::Block);
+		if (input.getEntry(Input::MMiddle))
+			this->setCell(this->getMouseCell(), 0, CellType::Block);
+	}
+}
+
+sf::Vector2i Map::mouseToPos(sf::Vector2i mouse) const
+{
+	return (sf::Vector2i(mouse.x / 22, mouse.y / 22));
+}
+
+sf::Vector2i Map::mouseToPos(int x, int y) const
+{
+	return (sf::Vector2i(x / 22, y / 22));
+}
+
 bool Map::mouseInBounds(int x, int y) const
 {
-	sf::Vector2i	pos(x / 22, y / 22);
+	sf::Vector2i pos(mouseToPos(x, y));
 
 	if (pos.y < mSize.y && pos.y >= 0 && pos.x < mSize.x && pos.x >= 0)
 		return (1);
 	return (0);
 }
 
-bool Map::mouseInBounds(sf::Vector2i pos) const
+bool Map::mouseInBounds(sf::Vector2i mouse) const
 {
-	pos = sf::Vector2i(pos.x / 22, pos.y / 22);
+	sf::Vector2i pos(mouseToPos(mouse));
 
 	if (pos.y < mSize.y && pos.y >= 0 && pos.x < mSize.x && pos.x >= 0)
 		return (1);
@@ -80,18 +110,14 @@ bool Map::inBounds(int x, int y) const
 	return (0);
 }
 
-void Map::updateMouseCell(sf::Vector2i mouse, class Player &player)
+bool Map::mouseCellChanged(void)
 {
-	sf::Vector2i	pos(mouse.x / 22, mouse.y / 22);
-
-	if (mMouseCell.x != pos.x || mMouseCell.y != pos.y)
+	if (mMouseCellChanged)
 	{
-		mMouseCell = pos;
-		if (player.getSelectedSpell())
-			player.showSpell(*this);
-		else
-			player.showPath(*this);
+		mMouseCellChanged = false;
+		return (true);
 	}
+	return (false);
 }
 
 void Map::clear(CellType type)
@@ -190,10 +216,24 @@ sf::Vector2i Map::getSize() const
 
 void Map::setMouseCell(int x, int y)
 {
-	sf::Vector2i	pos(x / 22, y / 22);
+	sf::Vector2i	pos(mouseToPos(x, y));
 
-	if (this->inBounds(pos))
+	if (mMouseCell != pos)
+	{
 		mMouseCell = pos;
+		mMouseCellChanged = true;
+	}
+}
+
+void Map::setMouseCell(sf::Vector2i mouse)
+{
+	sf::Vector2i	pos(mouseToPos(mouse));
+
+	if (mMouseCell != pos)
+	{
+		mMouseCell = pos;
+		mMouseCellChanged = true;
+	}
 }
 
 sf::Vector2i Map::getMouseCell(void) const
@@ -201,12 +241,9 @@ sf::Vector2i Map::getMouseCell(void) const
 	return (mMouseCell);
 }
 
-void Map::setCellPressed(int x, int y)
+void Map::setCellPressed(sf::Vector2i mouse)
 {
-	sf::Vector2i	pos(x / 22, y / 22);
-
-	if (this->inBounds(pos))
-		mCellPressed = pos;
+	mCellPressed = mouseToPos(mouse);
 }
 
 sf::Vector2i Map::getCellPressed(void) const

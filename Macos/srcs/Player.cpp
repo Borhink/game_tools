@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "Input.h"
+#include "Map.h"
 
 Player::Player(int x, int y, int pm) :
 	Movable(x, y, pm),
@@ -17,6 +19,32 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(cell, states);
 }
 
+void Player::update(Input &input, Map &map, int type)
+{
+	if (!input.getEntry(Input::MLeft))
+	{
+		if (type == sf::Event::MouseButtonReleased)
+		{
+			if (mSelectSpell)
+				this->useSpell(map);
+			else
+				this->goTo(map);
+		}
+		else if (map.mouseCellChanged())
+		{
+			if (mSelectSpell)
+				this->showSpell(map);
+			else
+				this->showPath(map);
+		}
+	}
+	if (input.getEntry(Input::Num1))
+	{
+		this->updateSelectedSpell(1, map);
+		input.keyReleased((sf::Keyboard::Key)Input::Num1);
+	}
+}
+
 bool Player::showSpell(Map &map)
 {
 	mSpell->show(map, mPos);
@@ -31,14 +59,6 @@ void Player::useSpell(Map &map)
 		map.clear(CellType::Zone);
 		mSelectSpell = 0;
 	}
-}
-
-void	Player::mouseAction(Map &map)
-{
-	if (mSelectSpell)
-		this->useSpell(map);
-	else
-		this->goTo(map);
 }
 
 void Player::updateSelectedSpell(int id, Map &map)
