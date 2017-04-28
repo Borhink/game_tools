@@ -34,8 +34,8 @@ class Map : public sf::Drawable
 		bool inBounds(int x, int y) const;
 		bool mouseCellChanged(void);
 		void clear(CellType type = CellType::None);
-		int getCell(sf::Vector2i pos, CellType type = CellType::None) const;
-		int getCell(int x, int y, CellType type = CellType::None) const;
+		int getCell(sf::Vector2i pos, int type = CellType::None) const;
+		int getCell(int x, int y, int type = CellType::None) const;
 		void setCell(sf::Vector2i pos, int val, CellType type = CellType::None);
 		void setCell(int x, int y, int val, CellType type = CellType::None);
 		int getPlayer(sf::Vector2i pos) const;
@@ -50,6 +50,7 @@ class Map : public sf::Drawable
 		sf::Vector2i getCellPressed(void) const;
 		bool validClic() const;
 
+		int				**mRange;
 	private:
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

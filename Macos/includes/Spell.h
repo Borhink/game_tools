@@ -19,6 +19,8 @@ class Spell
         void use(Map &map, sf::Vector2i player);
         void add_effect(std::string effect);
     private:
+		void adjustSight(Map &map, sf::Vector2i player);
+
         std::vector<Effect*> mEffects;
 		int mPo;
 		// int mPa;

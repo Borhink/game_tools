@@ -1,4 +1,5 @@
 #include "Spell.h"
+#include "Pathfinder.h"
 
 Spell::Spell(std::string effects, int po) :
 	mPo(po)
@@ -18,6 +19,16 @@ void Spell::add_effect(std::string effectArgs)
     mEffects.push_back(new Effect(effectArgs));
 }
 
+void Spell::adjustSight(Map &map, sf::Vector2i player)
+{
+	sf::Vector2i	mapSize(map.getSize());
+
+	for (int y(0); y < mapSize.y; y++)
+		for (int x(0); x < mapSize.x; x++)
+			if (map.getCell(sf::Vector2i(x, y), CellType::Range))
+				Pathfinder::checkSight(map, sf::Vector2i(x, y), player, 0);
+}
+
 void Spell::showRange(Map &map, sf::Vector2i player)
 {
 	int		i(mPo);
@@ -31,6 +42,7 @@ void Spell::showRange(Map &map, sf::Vector2i player)
 			|| (y > mPo && x >= mPo - i && x <= mPo + i))
 				map.setCell(sf::Vector2i(player.x + x - mPo, player.y + y - mPo), 1, CellType::Range);
 	}
+	this->adjustSight(map, player);
 }
 
 void Spell::show(Map &map, sf::Vector2i player)

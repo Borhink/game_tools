@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Input.h"
 #include "Map.h"
+#include "Pathfinder.h"
 
 Player::Player(int x, int y, int pm) :
 	Movable(x, y, pm),
@@ -32,10 +33,11 @@ void Player::update(Input &input, Map &map, int type)
 		}
 		else if (map.mouseCellChanged())
 		{
-			if (mSelectSpell)
-				this->showSpell(map);
-			else
-				this->showPath(map);
+			// if (mSelectSpell)
+			// 	this->showSpell(map);
+			// else
+			// 	this->showPath(map);
+			Pathfinder::checkSight(map, map.getMouseCell(), mPos, 1);
 		}
 	}
 	if (input.getEntry(Input::Num1))

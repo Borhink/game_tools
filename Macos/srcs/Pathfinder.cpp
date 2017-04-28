@@ -131,3 +131,231 @@ int Pathfinder::getPath(Map &map, Movable &movable)
 	}
 	return (0);
 }
+
+void Pathfinder::checkSight1(Map &map, sf::Vector2i p1, sf::Vector2i p2, int noSight)
+{
+	int				sight(1);
+	int				e(std::abs(p2.x - p1.x));
+	sf::Vector2i	d(e * 2, std::abs(p2.y - p1.y) * 2);
+
+	while (p1.x <= p2.x)
+	{
+		if (map.getCell(p1, CellType::Block + CellType::Player))
+			sight = 0;
+		if (noSight && sight)
+			map.setCell(p1, 1, CellType::Range);
+		if (!sight)
+			map.setCell(p1, 0, CellType::Range);
+		if ((e -= d.y) <= 0)
+		{
+			p1.y++;
+			e += d.x;
+		}
+		p1.x++;
+	}
+}
+
+void Pathfinder::checkSight2(Map &map, sf::Vector2i p1, sf::Vector2i p2, int noSight)
+{
+	int				sight(1);
+	int				e(std::abs(p2.y - p1.y));
+	sf::Vector2i	d(std::abs(p2.x - p1.x) * 2, e * 2);
+
+	while (p1.y <= p2.y)
+	{
+		if (map.getCell(p1, CellType::Block + CellType::Player))
+			sight = 0;
+		if (noSight && sight)
+			map.setCell(p1, 1, CellType::Range);
+		if (!sight)
+			map.setCell(p1, 0, CellType::Range);
+		if ((e -= d.x) < 0)
+		{
+			p1.x++;
+			e += d.y;
+		}
+		p1.y++;
+	}
+}
+
+void Pathfinder::checkSight3(Map &map, sf::Vector2i p1, sf::Vector2i p2, int noSight)
+{
+	int				sight(1);
+	int				e(std::abs(p2.y - p1.y));
+	sf::Vector2i	d(std::abs(p2.x - p1.x) * 2, e * 2);
+
+	while (p1.y <= p2.y)
+	{
+		if (map.getCell(p1, CellType::Block + CellType::Player))
+			sight = 0;
+		if (noSight && sight)
+			map.setCell(p1, 1, CellType::Range);
+		if (!sight)
+			map.setCell(p1, 0, CellType::Range);
+		if ((e -= d.x) < 0)
+		{
+			p1.x--;
+			e += d.y;
+		}
+		p1.y++;
+	}
+}
+
+void Pathfinder::checkSight4(Map &map, sf::Vector2i p1, sf::Vector2i p2, int noSight)
+{
+	int				sight(1);
+	int				e(std::abs(p2.x - p1.x));
+	sf::Vector2i	d(e * 2, std::abs(p2.y - p1.y) * 2);
+
+	while (p1.x >= p2.x)
+	{
+		if (map.getCell(p1, CellType::Block + CellType::Player))
+			sight = 0;
+		if (noSight && sight)
+			map.setCell(p1, 1, CellType::Range);
+		if (!sight)
+			map.setCell(p1, 0, CellType::Range);
+		if ((e -= d.y) < 0)
+		{
+			p1.y++;
+			e += d.x;
+		}
+		p1.x--;
+	}
+}
+
+void Pathfinder::checkSight5(Map &map, sf::Vector2i p1, sf::Vector2i p2, int noSight)
+{
+	int				sight(1);
+	int				e(std::abs(p2.x - p1.x));
+	sf::Vector2i	d(e * 2, std::abs(p2.y - p1.y) * 2);
+
+	while (p1.x >= p2.x)
+	{
+		if (map.getCell(p1, CellType::Block + CellType::Player))
+			sight = 0;
+		if (noSight && sight)
+			map.setCell(p1, 1, CellType::Range);
+		if (!sight)
+			map.setCell(p1, 0, CellType::Range);
+		if ((e -= d.y) < 0)
+		{
+			p1.y--;
+			e += d.x;
+		}
+		p1.x--;
+	}
+}
+
+void Pathfinder::checkSight6(Map &map, sf::Vector2i p1, sf::Vector2i p2, int noSight)
+{
+	int				sight(1);
+	int				e(std::abs(p2.y - p1.y));
+	sf::Vector2i	d(std::abs(p2.x - p1.x) * 2, e * 2);
+
+	while (p1.y >= p2.y)
+	{
+		if (map.getCell(p1, CellType::Block + CellType::Player))
+			sight = 0;
+		if (noSight && sight)
+			map.setCell(p1, 1, CellType::Range);
+		if (!sight)
+			map.setCell(p1, 0, CellType::Range);
+		if ((e -= d.x) < 0)
+		{
+			p1.x--;
+			e += d.y;
+		}
+		p1.y--;
+	}
+}
+
+void Pathfinder::checkSight7(Map &map, sf::Vector2i p1, sf::Vector2i p2, int noSight)
+{
+	int				sight(1);
+	int				e(std::abs(p2.y - p1.y));
+	sf::Vector2i	d(std::abs(p2.x - p1.x) * 2, e * 2);
+
+	while (p1.y >= p2.y)
+	{
+		if (map.getCell(p1, CellType::Block + CellType::Player))
+			sight = 0;
+		if (noSight && sight)
+			map.setCell(p1, 1, CellType::Range);
+		if (!sight)
+			map.setCell(p1, 0, CellType::Range);
+		if ((e -= d.x) < 0)
+		{
+			p1.x++;
+			e += d.y;
+		}
+		p1.y--;
+	}
+}
+
+void Pathfinder::checkSight8(Map &map, sf::Vector2i p1, sf::Vector2i p2, int noSight)
+{
+	int				sight(1);
+	int				e(std::abs(p2.x - p1.x));
+	sf::Vector2i	d(e * 2, std::abs(p2.y - p1.y) * 2);
+
+	while (p1.x <= p2.x)
+	{
+		if (map.getCell(p1, CellType::Block + CellType::Player))
+			sight = 0;
+		if (noSight && sight)
+			map.setCell(p1, 1, CellType::Range);
+		if (!sight)
+			map.setCell(p1, 0, CellType::Range);
+		if ((e -= d.y) < 0)
+		{
+			p1.y--;
+			e += d.x;
+		}
+		p1.x++;
+	}
+}
+
+void Pathfinder::checkSight(Map &map, sf::Vector2i pos, sf::Vector2i player, int noSight)
+{
+	sf::Vector2i	dir(pos.x - player.x, pos.y - player.y);
+
+	if (noSight)
+		map.clear(CellType::Range);
+	if (dir.x >= 0)// DROITE
+	{
+		if (dir.y >= 0)// BAS
+		{
+			if (std::abs(dir.x) > std::abs(dir.y))// X
+				Pathfinder::checkSight1(map, player, pos, noSight);
+			else// Y
+				Pathfinder::checkSight2(map, player, pos, noSight);
+
+		}
+		else// HAUT
+		{
+			if (std::abs(dir.x) > std::abs(dir.y))// X
+				Pathfinder::checkSight8(map, player, pos, noSight);
+			else// Y
+				Pathfinder::checkSight7(map, player, pos, noSight);
+		}
+	}
+	else// GAUCHE
+	{
+		if (dir.y >= 0)// BAS
+		{
+			if (std::abs(dir.x) > std::abs(dir.y))// X
+				Pathfinder::checkSight4(map, player, pos, noSight);
+			else// Y
+				Pathfinder::checkSight3(map, player, pos, noSight);
+
+		}
+		else// HAUT
+		{
+			if (std::abs(dir.x) > std::abs(dir.y))// X
+				Pathfinder::checkSight5(map, player, pos, noSight);
+			else// Y
+				Pathfinder::checkSight6(map, player, pos, noSight);
+		}
+	}
+}

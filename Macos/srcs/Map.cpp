@@ -23,6 +23,7 @@ Map::Map(sf::Vector2i size) :
 {
 	mCell = initTab(mCell, mSize);
 	mPlayer = initTab(mPlayer, mSize);
+	mRange = initTab(mRange, mSize);
 }
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -131,7 +132,7 @@ void Map::clear(CellType type)
 			this->setCell(x, y, 0, type);
 }
 
-int Map::getCell(sf::Vector2i pos, CellType type) const
+int Map::getCell(sf::Vector2i pos, int type) const
 {
 	if (this->inBounds(pos))
 	{
@@ -143,7 +144,7 @@ int Map::getCell(sf::Vector2i pos, CellType type) const
 	return (-1);
 }
 
-int Map::getCell(int x, int y, CellType type) const
+int Map::getCell(int x, int y, int type) const
 {
 	if (this->inBounds(x, y))
 	{
