@@ -4,7 +4,7 @@
 
 Player::Player(int x, int y, int pm) :
 	Movable(x, y, pm),
-	mSpell(new Spell("T5,1,10,12")),
+	mSpell(new Spell("X2,1,2,5", 5)),
 	mSelectSpell(0)
 {
 }
@@ -57,6 +57,7 @@ void Player::useSpell(Map &map)
 	{
 		mSpell->use(map, mPos);
 		map.clear(CellType::Zone);
+		map.clear(CellType::Range);
 		mSelectSpell = 0;
 	}
 }
@@ -67,11 +68,13 @@ void Player::updateSelectedSpell(int id, Map &map)
 	if (mSelectSpell)
 	{
 		map.clear(CellType::Path);
+		mSpell->showRange(map, mPos);
 		this->showSpell(map);
 	}
 	else
 	{
 		map.clear(CellType::Zone);
+		map.clear(CellType::Range);
 		this->showPath(map);
 	}
 }

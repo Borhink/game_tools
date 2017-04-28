@@ -14,8 +14,9 @@ enum CellType
 	View = 4,
 	Zone = 8,
 	Player = 16,
+	Range = 32,
 
-	TypeCount = 32
+	TypeCount = 64
 };
 
 class Map : public sf::Drawable

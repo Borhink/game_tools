@@ -40,8 +40,12 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 				cell.setFillColor(sf::Color(155, 155, 155, 255));
 			else
 				cell.setFillColor(sf::Color::White);//Vide
+			cell.setPosition(x * 22, y * 22);
+			target.draw(cell, states);
+			if (this->getCell(x, y, CellType::Range))//Zone de sort
+				cell.setFillColor(sf::Color(65,105,225, 100));
 			if (this->getCell(x, y, CellType::Zone))//Zone de sort
-				cell.setFillColor(sf::Color::Red);
+				cell.setFillColor(sf::Color(255, 0, 0, 180));
 			if (this->getCell(x, y, CellType::Path))//Chemin pathfinding
 				cell.setFillColor(sf::Color::Green);
 			cell.setPosition(x * 22, y * 22);
