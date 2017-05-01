@@ -21,7 +21,7 @@ class Pathfinder
 		static int	nextCell(sf::Vector2i cur, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize, int weight, std::queue<sf::Vector2i> &cells, sf::Vector2i playerPos);
 		static int getWeight(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize);
 		static sf::Vector2i getPath(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize);
-		static int pathfinding(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize, sf::Vector2i movablePos);
+		static int pathfinding(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize, Movable &movable);
 		static void checkSight1(Map &map, sf::Vector2i p1, sf::Vector2i p2);
 		static void checkSight2(Map &map, sf::Vector2i p1, sf::Vector2i p2);
 		static void checkSight3(Map &map, sf::Vector2i p1, sf::Vector2i p2);

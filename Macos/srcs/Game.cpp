@@ -3,7 +3,7 @@
 Game::Game(sf::RenderWindow	*window) :
 	mInput(new Input()),
 	mWindow(window),
-	mMap(new Map(sf::Vector2i(20, 20))),
+	mMap(new Map(sf::Vector2i(30, 25))),
 	mPlayer(new class Player(10, 10, 7))
 {
     //ctor

@@ -16,7 +16,7 @@
 int main()
 {
     Debug::log("=== LAUNCHING THE GAME ===");
-    sf::RenderWindow    window(sf::VideoMode(580, 615), "Map manager");
+    sf::RenderWindow    window(sf::VideoMode(1024 * 4 / 3, 1024), "Map manager");
     sf::Event		    event;
 	Game				game(&window);
 	sf::Clock			updateTime;

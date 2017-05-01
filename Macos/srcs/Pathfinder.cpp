@@ -1,4 +1,5 @@
 #include "Pathfinder.h"
+#include <unistd.h>
 
 void Pathfinder::copyBlock(std::vector<std::vector<int>> &pathMap, Map &map)
 {
@@ -73,7 +74,7 @@ sf::Vector2i Pathfinder::getPath(sf::Vector2i pos, std::vector<std::vector<int>>
     return (path);
 }
 
-int	Pathfinder::pathfinding(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize, sf::Vector2i movablePos)
+int	Pathfinder::pathfinding(sf::Vector2i pos, std::vector<std::vector<int>> &gameMap, sf::Vector2i mapSize, Movable &movable)
 {
     std::queue<sf::Vector2i>    cells;
     int                         weight;
@@ -85,11 +86,14 @@ int	Pathfinder::pathfinding(sf::Vector2i pos, std::vector<std::vector<int>> &gam
     {
         cur = cells.front();
         weight = gameMap[cur.y][cur.x];
-		if (nextCell(sf::Vector2i(cur.x, cur.y - 1), gameMap, mapSize, weight, cells, movablePos)
-		|| nextCell(sf::Vector2i(cur.x, cur.y + 1), gameMap, mapSize, weight, cells, movablePos)
-		|| nextCell(sf::Vector2i(cur.x + 1, cur.y), gameMap, mapSize, weight, cells, movablePos)
-		|| nextCell(sf::Vector2i(cur.x - 1, cur.y), gameMap, mapSize, weight, cells, movablePos))
-			return (1);
+		if (weight - 100 < movable.getPm())
+		{
+			if (nextCell(sf::Vector2i(cur.x, cur.y - 1), gameMap, mapSize, weight, cells, movable.getPos())
+			|| nextCell(sf::Vector2i(cur.x, cur.y + 1), gameMap, mapSize, weight, cells, movable.getPos())
+			|| nextCell(sf::Vector2i(cur.x + 1, cur.y), gameMap, mapSize, weight, cells, movable.getPos())
+			|| nextCell(sf::Vector2i(cur.x - 1, cur.y), gameMap, mapSize, weight, cells, movable.getPos()))
+				return (1);
+		}
         cells.pop();
     }
     return (0);
@@ -101,36 +105,27 @@ int Pathfinder::getPath(Map &map, Movable &movable)
 	sf::Vector2i					pos(map.getMouseCell());
 	sf::Vector2i					movablePos(movable.getPos());
 	std::vector<std::vector<int>>	pathMap(mapSize.y);
-	int								pm(movable.getPm());
 
 	map.clear(CellType::Path);
-	if (map.inBounds(pos) && pos != movablePos && Pathfinder::getCellDist(map, movablePos) <= pm && !map.getCell(pos, CellType::Block))
+	if (map.inBounds(pos) && pos != movablePos && Pathfinder::getCellDist(map, movablePos) <= movable.getPm() && !map.getCell(pos, CellType::Block))
 	{
-	    Debug::log("Movable::goTo: pos.x = " + Debug::to_str(pos.x));
-	    Debug::log("Movable::goTo: pos.y = " + Debug::to_str(pos.y));
 		copyBlock(pathMap, map);
-	    if (pathfinding(pos, pathMap, mapSize, movablePos))
+	    if (pathfinding(pos, pathMap, mapSize, movable))
 	    {
-	        Debug::log("Movable::goTo: map = " + Debug::to_str(pathMap, mapSize));
-	        Debug::log("Movable::goTo: PATH FIND !");
 	        for (sf::Vector2i cur(movablePos); cur != pos;)
 	        {
-				if (pm == 0)
-				{
-					map.clear(CellType::Path);
-					return (0);
-				}
 	            cur = getPath(cur, pathMap, mapSize);
 				map.setCell(cur, 1, CellType::Path);
-				pm--;
 	        }
 			return (1);
 	    }
-		Debug::log("Movable::goTo: map = " + Debug::to_str(pathMap, mapSize));
-		Debug::log("Movable::goTo: PATH NOT FIND !");
 	}
 	return (0);
 }
+
+// ========================================================================== //
+// ==                          LINE OF SIGHT                               == //
+// ========================================================================== //
 
 bool Pathfinder::inCell(sf::Vector2i pos, sf::Vector2i cell)
 {
