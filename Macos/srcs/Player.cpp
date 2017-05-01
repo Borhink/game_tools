@@ -5,7 +5,7 @@
 
 Player::Player(int x, int y, int pm) :
 	Movable(x, y, pm),
-	mSpell(new Spell("X2,1,2,5", 5)),
+	mSpell(new Spell("X2,1,2,5", 25)),
 	mSelectSpell(0)
 {
 }
@@ -33,11 +33,10 @@ void Player::update(Input &input, Map &map, int type)
 		}
 		else if (map.mouseCellChanged())
 		{
-			// if (mSelectSpell)
-			// 	this->showSpell(map);
-			// else
-			// 	this->showPath(map);
-			Pathfinder::checkSight(map, map.getMouseCell(), mPos, 1);
+			if (mSelectSpell)
+				this->showSpell(map);
+			else
+				this->showPath(map);
 		}
 	}
 	if (input.getEntry(Input::Num1))

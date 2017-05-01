@@ -26,7 +26,7 @@ void Spell::adjustSight(Map &map, sf::Vector2i player)
 	for (int y(0); y < mapSize.y; y++)
 		for (int x(0); x < mapSize.x; x++)
 			if (map.getCell(sf::Vector2i(x, y), CellType::Range))
-				Pathfinder::checkSight(map, sf::Vector2i(x, y), player, 0);
+				Pathfinder::checkSight(map, sf::Vector2i(x, y), player);
 }
 
 void Spell::showRange(Map &map, sf::Vector2i player)
@@ -53,7 +53,7 @@ void Spell::show(Map &map, sf::Vector2i player)
     int distY(pos.y - player.y);
 
 	map.clear(CellType::Zone);
-	if (std::abs(distX) + std::abs(distY) <= mPo && !map.getCell(pos, CellType::Block))
+	if (std::abs(distX) + std::abs(distY) <= mPo && map.getCell(pos, CellType::Range))
 	{
 	    if (std::abs(distX) >= std::abs(distY))
 	        dir = distX < 0 ? Effect::Left : Effect::Right;
