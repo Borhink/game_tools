@@ -4,6 +4,7 @@ Outils perso pour potentiellement créer jeu ensuite. Type stratégie, tour par 
 <b>-Spell & Effect:</b>
 
 Zones d'effet : OK
+
 Lignes de vue : OK
 
 Effets : à faire
