@@ -1,6 +1,12 @@
 # game_tools
 Outils perso pour potentiellement créer jeu ensuite. Type stratégie, tour par tour, échiquier
 
+<b>OS:
+* Macos -> OK
+* Codeblock(windows) -> Obsolète
+La librairie SFML 2.0 est requise.
+</b>
+
 <b>-Spell & Effect:</b>
 
 * Zones d'effet : OK
