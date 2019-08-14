@@ -1,5 +1,5 @@
 # game_tools
-Outils perso pour potentiellement créer jeu ensuite. Type stratégie, tour par tour, échiquier
+Outils perso type stratégie, tour par tour, échiquier
 
 <b>OS:
 * Macos -> OK
